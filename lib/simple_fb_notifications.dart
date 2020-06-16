@@ -8,11 +8,8 @@ final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
-
-
 void showNotification(notification) {
-  var and = AndroidNotificationDetails(
-      'chid_bin', 'chname_bin', 'chdesc_bin',
+  var and = AndroidNotificationDetails('chid_bin', 'chname_bin', 'chdesc_bin',
       importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
   var ind = IOSNotificationDetails();
 
@@ -21,7 +18,8 @@ void showNotification(notification) {
 }
 
 void initializeNotification(topic) async {
-  var initializationSettingsAndroid = AndroidInitializationSettings('notification_icon');
+  var initializationSettingsAndroid =
+      AndroidInitializationSettings('notification_icon');
   var initializationSettingsIOS = IOSInitializationSettings();
   var initializationSettings = InitializationSettings(
       initializationSettingsAndroid, initializationSettingsIOS);
@@ -43,23 +41,23 @@ void initializeNotification(topic) async {
 class NotificationWrapper extends StatefulWidget {
   final Widget child;
   final String topic;
-  NotificationWrapper({this.child,@required this.topic});
+  final void Function(String) onToken;
+  NotificationWrapper({this.child, @required this.topic, this.onToken});
   @override
-  _NotificationWrapperState createState() => _NotificationWrapperState(child);
+  _NotificationWrapperState createState() => _NotificationWrapperState();
 }
 
 class _NotificationWrapperState extends State<NotificationWrapper> {
-  final Widget child;
-
-  _NotificationWrapperState(this.child);
+  _NotificationWrapperState();
 
   @override
   void initState() {
     super.initState();
     initializeNotification(widget.topic);
   }
+
   @override
   Widget build(BuildContext context) {
-    return child;
+    return widget.child;
   }
 }
