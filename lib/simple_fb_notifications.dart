@@ -17,7 +17,7 @@ void showNotification(notification) {
       notification["body"], NotificationDetails(and, ind));
 }
 
-void initializeNotification(topic) async {
+void initializeNotification(topic,{void Function(String) onToken}) async {
   var initializationSettingsAndroid =
       AndroidInitializationSettings('notification_icon');
   var initializationSettingsIOS = IOSInitializationSettings();
@@ -34,7 +34,8 @@ void initializeNotification(topic) async {
   var res = await _firebaseMessaging.requestNotificationPermissions();
   if (res == null || res) {
     await _firebaseMessaging.subscribeToTopic(topic);
-    print(await _firebaseMessaging.getToken());
+    onToken?.call(await _firebaseMessaging.getToken());
+    // print(await _firebaseMessaging.getToken());
   }
 }
 
@@ -53,7 +54,7 @@ class _NotificationWrapperState extends State<NotificationWrapper> {
   @override
   void initState() {
     super.initState();
-    initializeNotification(widget.topic);
+    initializeNotification(widget.topic,onToken:widget.onToken);
   }
 
   @override

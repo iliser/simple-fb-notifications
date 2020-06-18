@@ -1,6 +1,6 @@
 name: simple_fb_notifications
-description: A new Flutter package project.
-version: 0.0.1
+description: Simple firebase notification wrapper
+version: 0.0.2
 author:
 homepage:
 
